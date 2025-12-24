@@ -71,7 +71,7 @@ public class PredictionService {
     private String getAiAdvice(String diseaseName) {
         try {
             // Updated URL to version 1.5-flash for faster response
-            String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + geminiApiKey;
+            String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + geminiApiKey;
 
             // Define the AI Prompt
             String promptText = "Act as a professional plant pathologist. The crop has " + diseaseName + 
@@ -92,10 +92,12 @@ public class PredictionService {
             List resParts = (List) content.get("parts");
             Map firstPart = (Map) resParts.get(0);
             
-            return (String) firstPart.get("text");
+            return ((String) firstPart.get("text")).replace("*", "");
 
         } catch (Exception e) {
+            e.printStackTrace();
             return "AI advice currently unavailable. Consult a local expert for " + diseaseName + ".";
         }
     }
+
 }
